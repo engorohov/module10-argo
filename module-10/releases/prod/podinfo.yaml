@@ -1,0 +1,7 @@
+replicaCount: 4
+podinfo:
+  message: "PROD via ArgoCD by Evgen"
+  ui:
+    color: "#51cf66"
+postgresql:
+  enabled: false

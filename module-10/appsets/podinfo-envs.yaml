@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: podinfo-envs
+  namespace: argo
+spec:
+  generators:
+    - list:
+        elements:
+          - env: dev2
+            replicas: "1"
+            color: "#ff6b6b"
+            message: "DEV2 from ApplicationSet"
+          - env: staging
+            replicas: "2"
+            color: "#ffd43b"
+            message: "STAGING from ApplicationSet"
+          - env: prod2
+            replicas: "3"
+            color: "#51cf66"
+            message: "PROD2 from ApplicationSet"
+  template:
+    metadata:
+      name: 'podinfo-{{env}}'
+    spec:
+      project: team-podinfo
+      source:
+        repoURL: https://stefanprodan.github.io/podinfo
+        chart: podinfo
+        targetRevision: 6.5.0
+        helm:
+          values: |
+            replicaCount: {{replicas}}
+            ui:
+              color: "{{color}}"
+              message: "{{message}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'podinfo-{{env}}'
+      ignoreDifferences:
+        - group: apps
+          kind: Deployment
+          jsonPointers:
+            - /spec/replicas
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - RespectIgnoreDifferences=true

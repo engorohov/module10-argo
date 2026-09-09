@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: podinfo-git
+  namespace: argo
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/engorohov/test.git
+        revision: main
+        directories:
+          - path: envs/*
+  template:
+    metadata:
+      name: 'podinfo-git-{{path.basename}}' # Добавлены скобки {{ }}
+    spec:
+      project: default
+      sources:
+        - repoURL: https://stefanprodan.github.io/podinfo
+          chart: podinfo
+          targetRevision: 6.5.0
+          helm:
+            valueFiles:
+              - $values/{{path}}/values.yaml # Добавлены скобки {{ }}
+        - repoURL: https://github.com/engorohov/test.git
+          targetRevision: main
+          ref: values
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'podinfo-git-{{path.basename}}' # Добавлены скобки {{ }}
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

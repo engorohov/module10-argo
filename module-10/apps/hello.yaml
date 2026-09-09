@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello
+  namespace: argo
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/engorohov/test.git
+    targetRevision: main
+    path: manifests/hello   # ИСПРАВЛЕННЫЙ ПУТЬ
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
