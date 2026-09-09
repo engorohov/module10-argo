@@ -19,7 +19,7 @@ helm repo update
 
 2. Устанавливаем ArgoCD одной командой, используя конфигурационный файл из этого репозитория:
 ```bash
-helm install argocd argocd/argo-helm -n argo --create-namespace -f install/argocd-values.yaml
+helm install argocd argocd/argo-helm -n argo --create-namespace -f module-10/install/argocd-values.yaml
 ```
 
 3. Запускаем GitOps-конвейер (App-of-Apps). Для этого примените корневой манифест из папки репозитория:
