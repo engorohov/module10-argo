@@ -1,0 +1,11 @@
+replicaCount: 3
+ui:
+  color: "#51cf66"
+  message: "PROD via ArgoCD made by E"
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 200m
+    memory: 128Mi
