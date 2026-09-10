@@ -13,7 +13,7 @@
 
 1. Добавляем официальный Helm-репозиторий проекта Argo:
 ```bash
-helm repo add argocd https://github.com/engorohov/module10-argo.git
+helm repo add argocd https://github.com/engorohov/module10-argo
 helm repo update
 ```
 
